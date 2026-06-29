@@ -1,7 +1,6 @@
 import {
   BadgeCheck,
   ArrowRight,
-  MessageCircle,
   Sparkles,
   Award,
   Truck,
@@ -22,7 +21,6 @@ import {
 import {
   SERVICES,
   CATEGORIES,
-  INDUSTRIES,
   PROCESS_STEPS,
   WHY_CHOOSE,
   TIMELINE,
@@ -30,6 +28,10 @@ import {
   SITE_TAGLINE,
 } from "@/data/site";
 import { Link } from "@/components/AppLink";
+import industriesBoard from "@/assets/industries1.png";
+import industriesBoardTwo from "@/assets/industries2.png";
+import heroMotionVideo from "@/assets/moving LED_dot pattern.mp4";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Printer,
@@ -52,35 +54,30 @@ export function HomePage() {
       {/* HERO */}
       <section className="relative overflow-hidden bg-[#fff4d5]">
         <div className="relative min-h-[620px] md:min-h-[560px] xl:min-h-[640px]">
-          <img
-            src="/images/shivrudra-printing-banner.png"
-            alt="Shivrudra Graphics printing, signage and branding studio"
+          <video
             className="absolute inset-0 h-full w-full object-cover object-left"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fff4d5]/20 to-[#fff4d5]/92" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#fff4d5]/70 via-transparent to-[#fff4d5]/70 md:hidden" />
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          >
+            <source src={heroMotionVideo} type="video/mp4" />
+          </video>
 
-          <div className="relative flex min-h-[620px] w-full items-center justify-end px-4 py-14 sm:px-8 md:min-h-[560px] md:px-7 md:py-16 lg:px-8 xl:min-h-[640px] xl:px-10 2xl:px-12">
-            <div className="w-full max-w-[560px] animate-fade-up rounded-2xl bg-[#fff4d5]/82 p-5 shadow-soft backdrop-blur-sm sm:p-7 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-0 xl:max-w-[600px]">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/75 border border-brand-yellow px-3 py-1.5 text-xs font-bold text-brand-dark mb-5 shadow-soft">
-                <BadgeCheck className="h-4 w-4 text-brand-red" />
-                ISO 9001:2015 Certified Company
-              </div>
-              <h1 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-brand-dark">
-                Shivrudra <span className="text-gradient-brand">Graphics</span>
-                <span className="block text-brand-dark">Pvt Ltd</span>
-              </h1>
-              <div className="mt-5 flex flex-wrap items-center gap-2 text-lg md:text-xl font-bold">
+          <div className="relative flex min-h-[620px] w-full items-center justify-center px-4 py-14 sm:px-8 md:min-h-[560px] md:px-7 md:py-16 lg:px-8 xl:min-h-[640px] xl:px-10 2xl:px-12">
+            <div className="mt-40 w-full max-w-[760px] animate-fade-up text-center md:mt-44 xl:mt-48">
+              <div className="flex flex-wrap items-center justify-center gap-2 text-lg md:text-xl font-bold">
                 <span className="text-brand-red">Designing</span>
                 <span className="text-brand-dark/40">|</span>
                 <span className="text-brand-red">Printing</span>
                 <span className="text-brand-dark/40">|</span>
                 <span className="text-brand-red">Branding</span>
               </div>
-              <p className="mt-4 text-brand-dark/75 text-base md:text-lg max-w-xl">
+              <p className="mx-auto mt-4 max-w-3xl text-base text-brand-dark/75 md:text-lg">
                 {SITE_TAGLINE} in Pune.
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link
                   to="/services"
                   className="inline-flex items-center gap-2 rounded-full gradient-brand text-white px-6 py-3.5 font-semibold shadow-brand hover:scale-105 transition"
@@ -91,7 +88,7 @@ export function HomePage() {
                   href={`https://wa.me/${CONTACT.whatsapp}`}
                   className="inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white px-6 py-3.5 font-semibold shadow-soft hover:scale-105 transition"
                 >
-                  <MessageCircle className="h-4 w-4" /> Get Quote
+                  <WhatsAppIcon className="h-4 w-4" /> Get Quote
                 </a>
               </div>
             </div>
@@ -246,17 +243,13 @@ export function HomePage() {
             ].map((v, i) => (
               <div
                 key={v.t}
-                className={`relative overflow-hidden rounded-2xl p-8 ${i === 1 ? "gradient-brand text-white" : "bg-white border border-border"} shadow-soft`}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-white p-8 shadow-soft transition hover:border-transparent hover:gradient-brand hover:text-white"
               >
-                <div
-                  className={`text-xs font-bold tracking-widest uppercase ${i === 1 ? "text-brand-yellow" : "text-brand-red"}`}
-                >
+                <div className="text-xs font-bold tracking-widest text-brand-red uppercase transition group-hover:text-brand-yellow">
                   0{i + 1}
                 </div>
                 <h3 className="mt-2 font-display font-black text-2xl">{v.t}</h3>
-                <p
-                  className={`mt-4 text-sm leading-relaxed ${i === 1 ? "text-white/90" : "text-muted-foreground"}`}
-                >
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground transition group-hover:text-white/90">
                   {v.d}
                 </p>
               </div>
@@ -293,7 +286,10 @@ export function HomePage() {
       {/* WHY CHOOSE */}
       <section className="py-20">
         <div className="container-page">
-          <SectionHeader eyebrow="Why Shivrudra" title="12 reasons clients pick us, every time" />
+          <SectionHeader
+            eyebrow="Why Shivrudra"
+            title="Why clients choose us as their trusted partner"
+          />
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {WHY_CHOOSE.map((w, i) => (
               <div
@@ -390,18 +386,25 @@ export function HomePage() {
       </section>
 
       {/* INDUSTRIES */}
-      <section className="py-20 bg-brand-light">
+      <section className="relative overflow-hidden bg-white py-20">
+        <div className="pointer-events-none absolute -left-16 -top-24 h-48 w-48 rounded-full border-[18px] border-dotted border-brand-yellow/70" />
         <div className="container-page">
-          <SectionHeader eyebrow="Industries We Serve" title="Trusted across every sector" />
-          <div className="mt-12 flex flex-wrap justify-center gap-2">
-            {INDUSTRIES.map((i) => (
-              <span
-                key={i}
-                className="px-4 py-2 rounded-full bg-white border border-border text-sm font-medium hover:bg-brand-red hover:text-white hover:border-brand-red transition cursor-default"
-              >
-                {i}
-              </span>
-            ))}
+          <SectionHeader
+            eyebrow="Industries We Serve"
+            title="Trusted by brands across industries"
+            desc="A creative partner trusted across sectors."
+          />
+          <div className="mx-auto mt-12 flex max-w-[1180px] flex-col items-center gap-6">
+            <img
+              src={industriesBoard}
+              alt="Industries We Serve"
+              className="block w-full object-contain"
+            />
+            <img
+              src={industriesBoardTwo}
+              alt="More industries we serve"
+              className="block w-[94.88%] max-w-[1120px] object-contain"
+            />
           </div>
           <div className="text-center mt-8">
             <Link
@@ -430,10 +433,11 @@ export function HomePage() {
                 <BadgeCheck className="h-4 w-4 text-brand-yellow" /> ISO 9001:2015 Certified
               </div>
               <h2 className="font-display font-black text-3xl md:text-5xl max-w-3xl mx-auto">
-                Have a printing or signage project in mind?
+                Let's create something great
               </h2>
               <p className="mt-4 text-white/90 max-w-xl mx-auto">
-                Talk to our team — we'll respond within hours with a tailored quote.
+                Tell us about your project - our team will connect with you to bring your ideas to
+                print.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link
@@ -446,7 +450,7 @@ export function HomePage() {
                   href={`https://wa.me/${CONTACT.whatsapp}`}
                   className="inline-flex items-center gap-2 rounded-full bg-brand-yellow text-brand-dark px-6 py-3.5 font-bold shadow-soft hover:scale-105 transition"
                 >
-                  <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+                  <WhatsAppIcon className="h-4 w-4" /> Chat on WhatsApp
                 </a>
               </div>
             </div>

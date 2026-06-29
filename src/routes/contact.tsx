@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { PageHero } from "@/components/PageHero";
 import { CONTACT, SERVICES } from "@/data/site";
-import { Phone, Mail, MapPin, MessageCircle, Send, Upload, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, Send, Upload, CheckCircle2 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 export function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -24,8 +25,8 @@ export function ContactPage() {
   return (
     <div>
       <PageHero
-        title="Let's talk"
-        subtitle="Tell us about your project and our team will get back within hours."
+        title="Let's work together"
+        subtitle="Tell us about your project - our team will connect with you to bring your ideas to print."
         breadcrumb={[{ label: "Contact" }]}
       />
       <section className="py-16 container-page grid lg:grid-cols-[1.3fr_1fr] gap-10">
@@ -145,7 +146,7 @@ export function ContactPage() {
               href={`https://wa.me/${CONTACT.whatsapp}`}
               className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 font-semibold"
             >
-              <MessageCircle className="h-4 w-4" /> WhatsApp Us
+              <WhatsAppIcon className="h-4 w-4" /> WhatsApp Us
             </a>
           </div>
 

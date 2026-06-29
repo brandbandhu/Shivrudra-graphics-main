@@ -1,8 +1,9 @@
-import { ArrowRight, MessageCircle, PackageCheck, ShoppingBag } from "lucide-react";
+import { ArrowRight, PackageCheck, ShoppingBag } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { CONTACT } from "@/data/site";
 import { findProductBySlug } from "@/lib/products";
 import { Link } from "@/components/AppLink";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 const VARIANTS = [
   {
@@ -103,7 +104,7 @@ export function ProductDetailPage({ productSlug }: { productSlug: string }) {
                     href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(message)}`}
                     className="mt-1 inline-flex items-center gap-1.5 font-bold text-brand-red transition hover:text-brand-maroon"
                   >
-                    Enquire <MessageCircle className="h-4 w-4" />
+                    Enquire <WhatsAppIcon className="h-4 w-4" />
                   </a>
                 </div>
               </article>

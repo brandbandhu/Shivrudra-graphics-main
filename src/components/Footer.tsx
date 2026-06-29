@@ -1,5 +1,4 @@
 import {
-  MessageCircle,
   Phone,
   Mail,
   MapPin,
@@ -12,6 +11,7 @@ import {
 import { CONTACT, SERVICES, SITE_TAGLINE } from "@/data/site";
 import logoUrl from "@/assets/logo.png";
 import { Link } from "@/components/AppLink";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 export function Footer() {
   return (
@@ -102,7 +102,7 @@ export function Footer() {
             href={`https://wa.me/${CONTACT.whatsapp}`}
             className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-semibold"
           >
-            <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+            <WhatsAppIcon className="h-4 w-4" /> Chat on WhatsApp
           </a>
           <div className="mt-4 flex gap-3">
             {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (

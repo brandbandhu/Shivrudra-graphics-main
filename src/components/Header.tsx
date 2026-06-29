@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Phone, MessageCircle, Menu, X, ChevronDown, BadgeCheck } from "lucide-react";
+import { Globe2, Mail, Phone, Menu, X, ChevronDown, BadgeCheck } from "lucide-react";
 import { SERVICES, CONTACT } from "@/data/site";
 import logoUrl from "@/assets/logo.png";
 import { Link } from "@/components/AppLink";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 type NavItem = { to: string; label: string; mega?: boolean };
 const NAV: NavItem[] = [
@@ -30,26 +31,23 @@ export function Header() {
             <span className="font-medium tracking-wide">ISO 9001:2015 Certified Company</span>
           </div>
           <div className="hidden sm:flex items-center gap-4">
-            <a
-              href={`tel:${CONTACT.phones[0].replace(/\s/g, "")}`}
-              className="flex items-center gap-1.5 hover:text-brand-yellow"
-            >
-              <Phone className="h-3.5 w-3.5" /> {CONTACT.phones[0]}
+            <a href={`mailto:${CONTACT.email}`} className="flex items-center gap-1.5 hover:text-brand-yellow">
+              <Mail className="h-3.5 w-3.5" /> {CONTACT.email}
             </a>
-            <a href={`mailto:${CONTACT.email}`} className="hover:text-brand-yellow">
-              {CONTACT.email}
+            <a href={`https://${CONTACT.website}`} className="flex items-center gap-1.5 hover:text-brand-yellow">
+              <Globe2 className="h-3.5 w-3.5" /> {CONTACT.website}
             </a>
           </div>
         </div>
       </div>
 
       {/* Main bar */}
-      <div className="container-page grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-4">
+      <div className="container-page grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-2">
         <Link to="/" className="flex min-w-0 items-center">
           <img
             src={logoUrl}
             alt="Shivrudra Graphics Pvt Ltd logo"
-            className="h-14 w-auto shrink-0 object-contain sm:h-16"
+            className="h-16 w-auto shrink-0 object-contain sm:h-18"
           />
         </Link>
 
@@ -66,7 +64,7 @@ export function Header() {
             rel="noreferrer"
             className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white px-4 py-2 text-sm font-semibold hover:opacity-90 transition shadow-soft"
           >
-            <MessageCircle className="h-4 w-4" /> WhatsApp
+            <WhatsAppIcon className="h-4 w-4" /> WhatsApp
           </a>
           <button
             className="md:hidden grid h-10 w-10 place-items-center rounded-lg border border-border"
@@ -153,7 +151,7 @@ export function Header() {
               href={`https://wa.me/${CONTACT.whatsapp}`}
               className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] text-white px-4 py-3 font-semibold"
             >
-              <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+              <WhatsAppIcon className="h-4 w-4" /> Chat on WhatsApp
             </a>
           </div>
         </div>

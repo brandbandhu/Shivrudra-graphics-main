@@ -1,8 +1,9 @@
 import { PageHero } from "@/components/PageHero";
 import { SERVICES, CONTACT } from "@/data/site";
-import { ArrowRight, CheckCircle2, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
 import { toProductSlug } from "@/lib/products";
 import { Link } from "@/components/AppLink";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 export function ServiceNotFound() {
   return (
@@ -80,7 +81,7 @@ export function ServiceDetail({ slug }: { slug: string }) {
               href={`https://wa.me/${CONTACT.whatsapp}?text=Hi,%20I%20need%20a%20quote%20for%20${encodeURIComponent(svc.name)}`}
               className="mt-4 inline-flex items-center gap-2 rounded-full bg-white text-brand-red px-4 py-2.5 font-bold text-sm"
             >
-              <MessageCircle className="h-4 w-4" /> WhatsApp Quote
+              <WhatsAppIcon className="h-4 w-4" /> WhatsApp Quote
             </a>
             <a
               href={`tel:${CONTACT.phones[0].replace(/\s/g, "")}`}

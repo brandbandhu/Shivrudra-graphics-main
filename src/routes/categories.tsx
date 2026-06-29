@@ -32,6 +32,26 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Sparkles,
 };
 
+const CATEGORY_SERVICE_SLUGS: Record<string, string[]> = {
+  "commercial-printing": ["digital-printing", "offset-printing", "flex-printing", "uv-printing"],
+  "industrial-printing": [
+    "screen-printing",
+    "industrial-name-plates",
+    "engraving-marking",
+    "laser-cnc-cutting",
+  ],
+  "corporate-branding": ["designing", "vinyl-printing", "signage", "badge-dome-printing"],
+  "led-sign-boards": ["signage", "laser-cnc-cutting", "uv-printing", "vinyl-printing"],
+  signages: ["signage", "safety-signages", "laser-cnc-cutting", "vinyl-printing"],
+  "packaging-labels": ["digital-printing", "offset-printing", "screen-printing", "uv-printing"],
+  "corporate-gifts": ["corporate-gift", "keychain", "bag-printing", "photo-frame", "stamp"],
+  "vehicle-branding": ["vinyl-printing", "flex-printing", "designing", "uv-printing"],
+  "safety-signages": ["safety-signages", "signage", "vinyl-printing", "digital-printing"],
+  "digital-printing": ["digital-printing", "uv-printing", "vinyl-printing", "badge-dome-printing"],
+  "offset-printing": ["offset-printing", "digital-printing", "screen-printing", "bag-printing"],
+  "custom-branding": ["designing", "signage", "corporate-gift", "engraving-marking", "keychain"],
+};
+
 export function CategoriesPage() {
   return (
     <div>
@@ -44,7 +64,10 @@ export function CategoriesPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CATEGORIES.map((c) => {
             const Icon = ICONS[c.icon] ?? Sparkles;
-            const related = SERVICES.slice(0, 5);
+            const related = (CATEGORY_SERVICE_SLUGS[c.slug] ?? [])
+              .map((slug) => SERVICES.find((service) => service.slug === slug))
+              .filter((service): service is (typeof SERVICES)[number] => Boolean(service));
+
             return (
               <div
                 key={c.slug}

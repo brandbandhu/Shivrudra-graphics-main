@@ -147,6 +147,35 @@
     transform: translateY(0);
   }
 }
+@keyframes print-dots-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(16px, -12px, 0);
+    opacity: 0.7;
+  }
+}
+@keyframes contour-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-18px, 10px, 0) rotate(2deg);
+  }
+}
+@keyframes paper-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--paper-rotate, 6deg));
+  }
+  50% {
+    transform: translateY(-18px) rotate(calc(var(--paper-rotate, 6deg) + 3deg));
+  }
+}
 
 @utility animate-float {
   animation: float-slow 8s ease-in-out infinite;
@@ -156,4 +185,33 @@
 }
 @utility animate-fade-up {
   animation: fade-up 0.6s ease-out both;
+}
+
+.hero-print-dots {
+  background-image: radial-gradient(circle, rgba(229, 37, 33, 0.32) 2px, transparent 2px);
+  background-size: 16px 16px;
+  animation: print-dots-drift 6s ease-in-out infinite;
+}
+
+.hero-contour {
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at center, transparent 28%, rgba(229, 37, 33, 0.18) 29%, transparent 31%),
+    radial-gradient(ellipse at center, transparent 42%, rgba(229, 37, 33, 0.14) 43%, transparent 45%),
+    radial-gradient(ellipse at center, transparent 56%, rgba(229, 37, 33, 0.1) 57%, transparent 59%);
+  animation: contour-drift 9s ease-in-out infinite;
+}
+
+.hero-contour-slow {
+  animation-duration: 13s;
+}
+
+.hero-paper-strip {
+  --paper-rotate: 6deg;
+  animation: paper-float 7s ease-in-out infinite;
+}
+
+.hero-paper-strip-delayed {
+  --paper-rotate: -6deg;
+  animation-delay: -2.5s;
 }
