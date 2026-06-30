@@ -18,6 +18,11 @@ import {
   Monitor,
   Layers,
   Star,
+  Search,
+  FileText,
+  Palette,
+  Wrench,
+  MessageCircle,
 } from "lucide-react";
 import {
   CATEGORIES,
@@ -66,6 +71,32 @@ const TESTIMONIALS = [
   },
 ];
 
+const PROCESS_ICONS = [
+  Users,
+  Search,
+  FileText,
+  Palette,
+  Printer,
+  Factory,
+  Wrench,
+  Truck,
+  Signpost,
+  MessageCircle,
+];
+
+const PROCESS_STRIP_POINTS = [
+  { left: "5%", top: "36px" },
+  { left: "15%", top: "52px" },
+  { left: "25%", top: "48px" },
+  { left: "35%", top: "36px" },
+  { left: "45%", top: "51px" },
+  { left: "55%", top: "78px" },
+  { left: "65%", top: "71px" },
+  { left: "75%", top: "42px" },
+  { left: "85%", top: "33px" },
+  { left: "95%", top: "18px" },
+];
+
 export function HomePage() {
   return (
     <div>
@@ -93,7 +124,7 @@ export function HomePage() {
                 <span className="text-brand-red">Branding</span>
               </div>
               <p className="mx-auto mt-5 max-w-5xl text-xl font-medium leading-relaxed text-brand-dark/80 md:text-2xl">
-                {SITE_TAGLINE} in Pune.
+                {SITE_TAGLINE}.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link
@@ -293,7 +324,22 @@ export function HomePage() {
                 <div className="font-display font-bold text-lg">{t.title}</div>
                 <p className="mt-2 text-sm text-white/70">{t.desc}</p>
                 {i < TIMELINE.length - 1 && (
-                  <div className="hidden md:block absolute top-7 left-full -translate-x-1/2 h-px w-full border-t-2 border-dashed border-white/20" />
+                  <svg
+                    className="pointer-events-none absolute left-[7.5rem] top-4 hidden h-8 w-[calc(100%+1.5rem-8.5rem)] text-white md:block"
+                    viewBox="0 0 260 32"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 17 C38 17 42 9 76 16 S126 17 156 13 S204 18 258 15"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeDasharray="10 16"
+                    />
+                  </svg>
                 )}
               </div>
             ))}
@@ -326,23 +372,81 @@ export function HomePage() {
       </section>
 
       {/* PROCESS */}
-      <section className="py-20 bg-brand-light">
-        <div className="container-page">
+      <section className="relative overflow-hidden bg-brand-light pb-10 pt-20">
+        <div className="absolute left-0 top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-yellow/20 blur-3xl" />
+        <div className="absolute bottom-10 right-0 h-80 w-80 translate-x-1/3 rounded-full bg-brand-red/10 blur-3xl" />
+        <div className="container-page relative">
           <SectionHeader
             eyebrow="Work Process"
             title="A streamlined 10-step journey"
             desc="From the first call to final installation, here's how we deliver."
           />
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+
+          <div className="relative left-1/2 mt-14 hidden w-screen -translate-x-1/2 overflow-x-auto overflow-y-hidden md:block">
+            <div className="relative min-w-[1280px] px-6 pb-2 pt-4 lg:px-10">
+              <div className="absolute left-0 top-6 h-36 w-36 rounded-full bg-brand-yellow/15 blur-3xl" />
+              <div className="absolute bottom-4 right-0 h-40 w-40 rounded-full bg-brand-red/10 blur-3xl" />
+              <div className="relative mx-auto h-[270px] max-w-[1800px]">
+                <svg
+                  className="pointer-events-none absolute inset-x-0 top-2 h-32 w-full text-brand-red/40"
+                  viewBox="0 0 1200 140"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M0 42 C95 62 165 78 260 72 S418 36 545 73 S710 117 840 76 S1030 72 1200 18"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeDasharray="8 18"
+                  />
+                </svg>
+
+                {PROCESS_STEPS.map((s, i) => {
+                  const Icon = PROCESS_ICONS[i];
+
+                  return (
+                    <div
+                      key={s}
+                      className="absolute w-[7.25rem] -translate-x-1/2 text-center"
+                      style={PROCESS_STRIP_POINTS[i]}
+                    >
+                      <div className="mx-auto grid h-11 w-11 place-items-center rounded-full border-4 border-white gradient-brand text-white shadow-brand">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="mt-5 rounded-xl border border-border bg-white px-3 py-4 text-brand-dark shadow-soft">
+                        <div className="font-display text-2xl font-black text-brand-red">
+                          {String(i + 1).padStart(2, "0")}
+                        </div>
+                        <div className="mt-1 text-sm font-bold">{s}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 md:hidden">
             {PROCESS_STEPS.map((s, i) => (
               <div
                 key={s}
-                className="relative p-5 rounded-xl bg-white border border-border text-center hover:-translate-y-1 transition"
+                className="relative flex items-center gap-4 rounded-xl border border-border bg-white p-4 shadow-soft"
               >
-                <div className="mx-auto grid h-10 w-10 place-items-center rounded-full gradient-accent text-brand-dark font-display font-black">
-                  {i + 1}
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full gradient-accent text-brand-dark">
+                  {(() => {
+                    const Icon = PROCESS_ICONS[i];
+                    return <Icon className="h-5 w-5" />;
+                  })()}
                 </div>
-                <div className="mt-3 font-semibold text-sm">{s}</div>
+                <div>
+                  <div className="font-display text-lg font-black text-brand-red">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                  <div className="font-semibold text-sm">{s}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -350,7 +454,7 @@ export function HomePage() {
       </section>
 
       {/* INDUSTRIES */}
-      <section className="relative overflow-hidden bg-white pb-10 pt-20">
+      <section className="relative overflow-hidden bg-white pb-10 pt-12">
         <div className="container-page">
           <SectionHeader
             eyebrow="Industries We Serve"
