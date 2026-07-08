@@ -74,8 +74,8 @@ export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
           <div
             className={
               framed
-                ? "mx-auto grid h-[84px] w-[84px] place-items-center rounded-full border-2 border-[#d8d8d8] bg-white transition group-hover:border-brand-red"
-                : "mx-auto grid h-32 w-32 place-items-center rounded-full border-[3px] border-[#d9d9d9] bg-white transition group-hover:border-brand-red sm:h-36 sm:w-36 xl:h-40 xl:w-40"
+                ? "mx-auto grid h-[76px] w-[76px] place-items-center rounded-full border-2 border-[#d8d8d8] bg-white transition group-hover:border-brand-red"
+                : "mx-auto grid h-28 w-28 place-items-center rounded-full border-[3px] border-[#d9d9d9] bg-white transition group-hover:border-brand-red sm:h-32 sm:w-32 xl:h-36 xl:w-36"
             }
           >
             <img
@@ -83,8 +83,8 @@ export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
               alt=""
               className={
                 framed
-                  ? "h-14 w-14 object-contain"
-                  : "h-20 w-20 object-contain sm:h-24 sm:w-24 xl:h-28 xl:w-28"
+                  ? "h-12 w-12 object-contain"
+                  : "h-16 w-16 object-contain sm:h-20 sm:w-20 xl:h-24 xl:w-24"
               }
             />
           </div>
