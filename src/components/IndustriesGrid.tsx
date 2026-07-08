@@ -1,116 +1,66 @@
-import {
-  Banknote,
-  BriefcaseBusiness,
-  Building2,
-  Car,
-  ClipboardCheck,
-  Cross,
-  GraduationCap,
-  HeartPulse,
-  Hotel,
-  Landmark,
-  Megaphone,
-  MonitorCog,
-  Paintbrush,
-  Plane,
-  Pickaxe,
-  School,
-  ShieldCheck,
-  ShoppingCart,
-  Stethoscope,
-  Tractor,
-  Truck,
-  Utensils,
-  Wrench,
-  Factory,
-  Hammer,
-  Home,
-  Laptop,
-  Leaf,
-  Pill,
-  Recycle,
-  Signal,
-  Store,
-  Tent,
-  Wheat,
-} from "lucide-react";
-import { INDUSTRIES } from "@/data/site";
-import { useEffect, useState } from "react";
-import { fetchPublicIndustries } from "@/lib/public-content";
-import agricultureIcon from "@/assets/icons/Agriculture.png";
-import educationIcon from "@/assets/icons/Education.png";
-import wholesaleTradeIcon from "@/assets/icons/Wholesale Trade (1).png";
-import miningIcon from "@/assets/icons/Mining.png";
-import homeBuildersIcon from "@/assets/icons/Home Builders.png";
-import automotiveIcon from "@/assets/icons/Automotive.png";
-import retailIcon from "@/assets/icons/Retail.png";
-import manufacturingIcon from "@/assets/icons/Manufacturing.png";
-import constructionIcon from "@/assets/icons/Construction.png";
-import foodBeverageIcon from "@/assets/icons/Food & Beverage.png";
-import cosmeticsIcon from "@/assets/icons/Cosmetics.png";
-import healthCareIcon from "@/assets/icons/Health Care.png";
-import governmentIcon from "@/assets/icons/Government.png";
-import eventIcon from "@/assets/icons/Event.png";
-import wasteManagementIcon from "@/assets/icons/Waste Management.png";
-import bankIcon from "@/assets/icons/Bank.png";
-import infrastructureIcon from "@/assets/icons/Infrastructure.png";
-import itIcon from "@/assets/icons/IT.png";
-import hotelIcon from "@/assets/icons/Hotel.png";
-import engineeringIcon from "@/assets/icons/Engineering.png";
-import pharmaceuticalsIcon from "@/assets/icons/_Pharmaceuticals.png";
-import telecomIcon from "@/assets/icons/Telecom.png";
-import shippingIcon from "@/assets/icons/Shipping.png";
-import insuranceIcon from "@/assets/icons/Insurance.png";
-import tourismIcon from "@/assets/icons/Tourism.png";
-import bakeryIcon from "@/assets/icons/Bakery.png";
-import landDevelopersIcon from "@/assets/icons/Land Developers.png";
-import decoratorIcon from "@/assets/icons/Decorator.png";
-import advertisingMediaIcon from "@/assets/icons/Advertising & Media.png";
+import advertisingMediaImage from "@/assets/industries we serve/Advertising & Media.png";
+import agricultureImage from "@/assets/industries we serve/Agriculture.png";
+import automotiveImage from "@/assets/industries we serve/Automotive.png";
+import bakeryImage from "@/assets/industries we serve/Bakery.png";
+import bankImage from "@/assets/industries we serve/Bank.png";
+import constructionImage from "@/assets/industries we serve/Construction.png";
+import cosmeticsImage from "@/assets/industries we serve/Cosmetics.png";
+import decoratorImage from "@/assets/industries we serve/Decorator.png";
+import educationImage from "@/assets/industries we serve/Education.png";
+import engineeringImage from "@/assets/industries we serve/Engineering.png";
+import eventImage from "@/assets/industries we serve/Event.png";
+import foodBeverageImage from "@/assets/industries we serve/Food & Beverage.png";
+import governmentImage from "@/assets/industries we serve/Government.png";
+import healthCareImage from "@/assets/industries we serve/Health Care.png";
+import homeBuildersImage from "@/assets/industries we serve/Home Builders.png";
+import hotelImage from "@/assets/industries we serve/Hotel.png";
+import infrastructureImage from "@/assets/industries we serve/Infrastructure.png";
+import insuranceImage from "@/assets/industries we serve/Insurance.png";
+import itImage from "@/assets/industries we serve/IT.png";
+import landDevelopersImage from "@/assets/industries we serve/Land Developers.png";
+import manufacturingImage from "@/assets/industries we serve/Manufacturing.png";
+import miningImage from "@/assets/industries we serve/Mining.png";
+import pharmaceuticalsImage from "@/assets/industries we serve/Pharmaceuticals.png";
+import retailImage from "@/assets/industries we serve/Retail.png";
+import shippingImage from "@/assets/industries we serve/Shipping.png";
+import telecomImage from "@/assets/industries we serve/Telecom.png";
+import tourismImage from "@/assets/industries we serve/Tourism.png";
+import wasteManagementImage from "@/assets/industries we serve/Waste Management.png";
+import wholesaleTradeImage from "@/assets/industries we serve/Wholesale Trade.png";
 
-const INDUSTRY_ICONS = [
-  Tractor,
-  GraduationCap,
-  ShoppingCart,
-  Pickaxe,
-  Home,
-  Car,
-  ShoppingCart,
-  Factory,
-  Hammer,
-  Utensils,
-  Paintbrush,
-  HeartPulse,
-  Landmark,
-  ClipboardCheck,
-  Recycle,
-  Banknote,
-  Building2,
-  MonitorCog,
-  Hotel,
-  School,
-  Wrench,
-  Pill,
-  Signal,
-  Truck,
-  ShieldCheck,
-  Plane,
-  Megaphone,
-  Store,
-  Building2,
-  Tent,
+const INDUSTRY_ITEMS = [
+  { name: "Advertising & Media", image: advertisingMediaImage },
+  { name: "Agriculture", image: agricultureImage },
+  { name: "Automotive", image: automotiveImage },
+  { name: "Bakery", image: bakeryImage },
+  { name: "Bank", image: bankImage },
+  { name: "Construction", image: constructionImage },
+  { name: "Cosmetics", image: cosmeticsImage },
+  { name: "Decorator", image: decoratorImage },
+  { name: "Education", image: educationImage },
+  { name: "Engineering", image: engineeringImage },
+  { name: "Event", image: eventImage },
+  { name: "Food & Beverage", image: foodBeverageImage },
+  { name: "Government", image: governmentImage },
+  { name: "Health Care", image: healthCareImage },
+  { name: "Home Builders", image: homeBuildersImage },
+  { name: "Hotel", image: hotelImage },
+  { name: "Infrastructure", image: infrastructureImage },
+  { name: "Insurance", image: insuranceImage },
+  { name: "IT", image: itImage },
+  { name: "Land Developers", image: landDevelopersImage },
+  { name: "Manufacturing", image: manufacturingImage },
+  { name: "Mining", image: miningImage },
+  { name: "Pharmaceuticals", image: pharmaceuticalsImage },
+  { name: "Retail", image: retailImage },
+  { name: "Shipping", image: shippingImage },
+  { name: "Telecom", image: telecomImage },
+  { name: "Tourism", image: tourismImage },
+  { name: "Waste Management", image: wasteManagementImage },
+  { name: "Wholesale Trade", image: wholesaleTradeImage },
 ];
 
 export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
-  const [industries, setIndustries] = useState<string[]>(INDUSTRIES);
-
-  useEffect(() => {
-    fetchPublicIndustries()
-      .then((items) => {
-        if (items.length) setIndustries(items.map((item) => item.name));
-      })
-      .catch(() => {});
-  }, []);
-
   return (
     <div
       className={
@@ -119,106 +69,36 @@ export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
           : "mx-auto grid max-w-[1280px] grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-6"
       }
     >
-      {industries.map((industry, index) => {
-        const Icon = INDUSTRY_ICONS[index] ?? BriefcaseBusiness;
-        const customIcon =
-          industry === "Agriculture"
-            ? agricultureIcon
-            : industry === "Education"
-              ? educationIcon
-              : industry === "Wholesale Trade"
-                ? wholesaleTradeIcon
-                : industry === "Mining"
-                  ? miningIcon
-                  : industry === "Home Builders"
-                    ? homeBuildersIcon
-                    : industry === "Automotive"
-                      ? automotiveIcon
-                      : industry === "Retail"
-                        ? retailIcon
-                        : industry === "Manufacturing"
-                          ? manufacturingIcon
-                          : industry === "Construction"
-                            ? constructionIcon
-                            : industry === "Food & Beverage"
-                              ? foodBeverageIcon
-                              : industry === "Cosmetics"
-                                ? cosmeticsIcon
-                                : industry === "Health Care"
-                                  ? healthCareIcon
-                                  : industry === "Government"
-                                    ? governmentIcon
-                                    : industry === "Event"
-                                      ? eventIcon
-                                      : industry === "Waste Management"
-                                        ? wasteManagementIcon
-                                        : industry === "Bank"
-                                          ? bankIcon
-                                          : industry === "Infrastructure"
-                                            ? infrastructureIcon
-                                            : industry === "IT"
-                                              ? itIcon
-                                              : industry === "Hotel"
-                                                ? hotelIcon
-                                                : industry === "Engineering"
-                                                  ? engineeringIcon
-                                                  : industry === "Pharmaceuticals"
-                                                    ? pharmaceuticalsIcon
-                                                    : industry === "Telecom"
-                                                      ? telecomIcon
-                                                      : industry === "Shipping"
-                                                        ? shippingIcon
-                                                        : industry === "Insurance"
-                                                          ? insuranceIcon
-                                                          : industry === "Tourism"
-                                                            ? tourismIcon
-                                                            : industry === "Bakery"
-                                                              ? bakeryIcon
-                                                              : industry === "Land Developers"
-                                                                ? landDevelopersIcon
-                                                                : industry === "Decorator"
-                                                                  ? decoratorIcon
-                                                                  : industry === "Advertising & Media"
-                                                                    ? advertisingMediaIcon
-                                                                    : null;
-
-        return (
-          <div key={`${industry}-${index}`} className="group text-center">
-            <div
+      {INDUSTRY_ITEMS.map((industry) => (
+        <div key={industry.name} className="group text-center">
+          <div
+            className={
+              framed
+                ? "mx-auto grid h-[84px] w-[84px] place-items-center rounded-full border-2 border-[#d8d8d8] bg-white transition group-hover:border-brand-red"
+                : "mx-auto grid h-32 w-32 place-items-center rounded-full border-[3px] border-[#d9d9d9] bg-white transition group-hover:border-brand-red sm:h-36 sm:w-36 xl:h-40 xl:w-40"
+            }
+          >
+            <img
+              src={industry.image}
+              alt=""
               className={
                 framed
-                  ? "mx-auto grid h-[84px] w-[84px] place-items-center rounded-full border-2 border-[#d8d8d8] bg-white text-[#666] transition group-hover:border-brand-red group-hover:text-brand-red"
-                  : "mx-auto grid h-32 w-32 place-items-center rounded-full border-[3px] border-[#d9d9d9] bg-white text-[#55565a] transition group-hover:border-brand-red group-hover:text-brand-red sm:h-36 sm:w-36 xl:h-40 xl:w-40"
+                  ? "h-14 w-14 object-contain"
+                  : "h-20 w-20 object-contain sm:h-24 sm:w-24 xl:h-28 xl:w-28"
               }
-            >
-              {customIcon ? (
-                <img
-                  src={customIcon}
-                  alt=""
-                  className={framed ? "h-14 w-14 object-contain" : "h-20 w-20 object-contain sm:h-24 sm:w-24 xl:h-28 xl:w-28"}
-                />
-              ) : (
-                <Icon
-                  className={
-                    framed
-                      ? "h-11 w-11 stroke-[1.45]"
-                      : "h-14 w-14 stroke-[1.55] sm:h-16 sm:w-16 xl:h-20 xl:w-20"
-                  }
-                />
-              )}
-            </div>
-            <div
-              className={
-                framed
-                  ? "mt-2 text-sm font-bold leading-tight text-brand-dark"
-                  : "mt-3 text-base font-bold leading-tight text-brand-dark sm:text-lg"
-              }
-            >
-              {industry}
-            </div>
+            />
           </div>
-        );
-      })}
+          <div
+            className={
+              framed
+                ? "mt-2 text-sm font-bold leading-tight text-brand-dark"
+                : "mt-3 text-base font-bold leading-tight text-brand-dark sm:text-lg"
+            }
+          >
+            {industry.name}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
