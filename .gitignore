@@ -15,6 +15,10 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
+.env
+api/.env
+api/uploads/*
+!api/uploads/.gitkeep
 
 # Wrangler / Cloudflare
 .wrangler/

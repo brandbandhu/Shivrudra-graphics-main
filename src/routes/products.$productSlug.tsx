@@ -1,32 +1,12 @@
-import { ArrowRight, PackageCheck, ShoppingBag } from "lucide-react";
+import { ArrowRight, PackageCheck } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { CONTACT } from "@/data/site";
+import { assetUrl } from "@/lib/api";
 import { findProductBySlug } from "@/lib/products";
 import { Link } from "@/components/AppLink";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-
-const VARIANTS = [
-  {
-    label: "Standard",
-    detail: "Balanced quality for everyday requirements",
-    colors: "from-white via-[#f7f7f7] to-[#ffe9e9]",
-  },
-  {
-    label: "Premium",
-    detail: "Higher finish for brand-facing use",
-    colors: "from-[#fff7d1] via-white to-[#ffe2df]",
-  },
-  {
-    label: "Custom Size",
-    detail: "Made to match your exact space or artwork",
-    colors: "from-white via-[#eef4ff] to-[#ffe8e2]",
-  },
-  {
-    label: "Bulk Order",
-    detail: "Planned production for larger quantities",
-    colors: "from-[#fff3cf] via-white to-[#e9f7ee]",
-  },
-];
+import { useEffect, useState } from "react";
+import { fetchPublicProduct, type PublicProductVariant } from "@/lib/public-content";
 
 export function ProductNotFound() {
   return (
@@ -40,14 +20,44 @@ export function ProductNotFound() {
 }
 
 export function ProductDetailPage({ productSlug }: { productSlug: string }) {
-  const product = findProductBySlug(productSlug);
+  const [product, setProduct] = useState(() => findProductBySlug(productSlug));
+  const [productDescription, setProductDescription] = useState("");
+  const [mainImageUrl, setMainImageUrl] = useState("");
+  const [variants, setVariants] = useState<PublicProductVariant[]>([]);
+  const [detailImages, setDetailImages] = useState<{ image_url?: string; alt_text?: string; id?: number }[]>([]);
+  const [failedDetailImages, setFailedDetailImages] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const fallbackProduct = findProductBySlug(productSlug);
+    setProduct(fallbackProduct);
+    setProductDescription("");
+    setMainImageUrl("");
+    setVariants([]);
+    setDetailImages([]);
+    setFailedDetailImages(new Set());
+    fetchPublicProduct(productSlug)
+      .then((item) => {
+        setProduct({
+          slug: item.slug,
+          name: item.name,
+          serviceSlug: item.serviceSlug || "",
+          serviceName: item.serviceName || "Services",
+        });
+        setProductDescription(item.description || item.short_description || "");
+        setMainImageUrl(item.main_image_url || "");
+        setDetailImages(item.images || []);
+        setVariants(item.variants || []);
+      })
+      .catch(() => {});
+  }, [productSlug]);
+
   if (!product) return <ProductNotFound />;
 
   return (
     <div>
       <PageHero
         title={product.name}
-        subtitle="Choose a product type to discuss on WhatsApp."
+        subtitle={productDescription || "Product details and images are managed from the admin panel."}
         breadcrumb={[
           { label: "Services", to: "/services" },
           { label: product.serviceName, to: `/services/${product.serviceSlug}` },
@@ -57,9 +67,16 @@ export function ProductDetailPage({ productSlug }: { productSlug: string }) {
 
       <section className="container-page py-14 md:py-18">
         <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-          <h2 className="font-display text-4xl font-black leading-tight text-brand-dark md:text-6xl">
-            Choose a product type to discuss on WhatsApp.
-          </h2>
+          <div className="max-w-4xl">
+            <h2 className="font-display text-4xl font-black leading-tight text-brand-dark md:text-6xl">
+              {product.name}
+            </h2>
+            {productDescription ? (
+              <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+                {productDescription}
+              </p>
+            ) : null}
+          </div>
           <Link
             to="/contact"
             className="inline-flex w-fit shrink-0 items-center gap-3 rounded-lg border border-border bg-white px-5 py-3 font-bold text-brand-dark shadow-soft transition hover:border-brand-red hover:text-brand-red"
@@ -68,8 +85,39 @@ export function ProductDetailPage({ productSlug }: { productSlug: string }) {
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {VARIANTS.map((variant) => {
+        {mainImageUrl ? (
+          <div className="mt-10 overflow-hidden rounded-lg border border-border bg-white shadow-soft">
+            <img src={assetUrl(mainImageUrl)} alt={product.name} className="h-auto w-full object-cover" />
+          </div>
+        ) : null}
+
+        {detailImages.filter((image) => image.image_url && !failedDetailImages.has(image.image_url)).length ? (
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {detailImages
+              .filter((image) => image.image_url && !failedDetailImages.has(image.image_url))
+              .map((image, index) => (
+                <div
+                  key={image.id ?? `${image.image_url}-${index}`}
+                  className="overflow-hidden rounded-lg border border-border bg-white shadow-soft"
+                >
+                  <img
+                    src={assetUrl(image.image_url)}
+                    alt={image.alt_text || product.name}
+                    className="aspect-[4/3] w-full object-cover transition duration-700 hover:scale-105"
+                    loading="lazy"
+                    onError={() => {
+                      if (!image.image_url) return;
+                      setFailedDetailImages((current) => new Set(current).add(image.image_url || ""));
+                    }}
+                  />
+                </div>
+              ))}
+          </div>
+        ) : null}
+
+        {variants.length ? (
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {variants.map((variant) => {
             const title = `${variant.label} ${product.name}`;
             const message = `Hi, I want to enquire about ${title}.`;
 
@@ -78,22 +126,29 @@ export function ProductDetailPage({ productSlug }: { productSlug: string }) {
                 <div
                   className={`relative aspect-[1.08] overflow-hidden rounded-lg border border-border bg-gradient-to-br ${variant.colors} shadow-soft`}
                 >
-                  <div className="absolute left-6 top-6 h-14 w-14 rounded-full bg-brand-yellow/70 blur-2xl" />
-                  <div className="absolute bottom-0 right-0 h-28 w-28 rounded-tl-full bg-brand-red/10" />
-                  <div className="absolute inset-6 flex flex-col items-center justify-center rounded-lg border border-white/80 bg-white/55 p-5 text-center">
-                    <div className="grid h-20 w-20 place-items-center rounded-2xl gradient-brand text-white shadow-brand transition group-hover:scale-105">
-                      <PackageCheck className="h-9 w-9" />
-                    </div>
-                    <div className="mt-4 font-display text-xl font-black text-brand-dark">
-                      {variant.label}
-                    </div>
-                    <p className="mt-2 text-xs font-medium text-muted-foreground">
-                      {variant.detail}
-                    </p>
-                  </div>
-                  <div className="absolute left-5 top-5 grid h-9 w-9 place-items-center rounded-full bg-white text-brand-red shadow-soft">
-                    <ShoppingBag className="h-4 w-4" />
-                  </div>
+                  {variant.image_url ? (
+                    <img
+                      src={assetUrl(variant.image_url)}
+                      alt={variant.label}
+                      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <>
+                      <div className="absolute left-6 top-6 h-14 w-14 rounded-full bg-brand-yellow/70 blur-2xl" />
+                      <div className="absolute bottom-0 right-0 h-28 w-28 rounded-tl-full bg-brand-red/10" />
+                      <div className="absolute inset-6 flex flex-col items-center justify-center rounded-lg border border-white/80 bg-white/55 p-5 text-center">
+                        <div className="grid h-20 w-20 place-items-center rounded-2xl gradient-brand text-white shadow-brand transition group-hover:scale-105">
+                          <PackageCheck className="h-9 w-9" />
+                        </div>
+                        <div className="mt-4 font-display text-xl font-black text-brand-dark">
+                          {variant.label}
+                        </div>
+                        <p className="mt-2 text-xs font-medium text-muted-foreground">
+                          {variant.detail}
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 <div className="mt-4 flex items-start justify-between gap-4">
@@ -110,7 +165,8 @@ export function ProductDetailPage({ productSlug }: { productSlug: string }) {
               </article>
             );
           })}
-        </div>
+          </div>
+        ) : null}
       </section>
     </div>
   );

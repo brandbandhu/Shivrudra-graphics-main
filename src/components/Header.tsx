@@ -10,7 +10,6 @@ const NAV: NavItem[] = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
   { to: "/services", label: "Services", mega: true },
-  { to: "/categories", label: "Categories" },
   { to: "/industries", label: "Industries We Serve" },
   { to: "/gallery", label: "Gallery" },
   { to: "/clients", label: "Clients" },

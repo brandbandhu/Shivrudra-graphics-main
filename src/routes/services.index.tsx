@@ -2,8 +2,20 @@ import { PageHero } from "@/components/PageHero";
 import { SERVICES } from "@/data/site";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/components/AppLink";
+import { useEffect, useState } from "react";
+import { fetchPublicServices, type PublicService } from "@/lib/public-content";
 
 export function ServicesPage() {
+  const [services, setServices] = useState<PublicService[]>(SERVICES);
+
+  useEffect(() => {
+    fetchPublicServices()
+      .then((items) => {
+        if (items.length) setServices(items);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div>
       <PageHero
@@ -13,7 +25,7 @@ export function ServicesPage() {
       />
       <section className="py-16 container-page">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SERVICES.map((s) => (
+          {services.map((s) => (
             <Link
               key={s.slug}
               to="/services/$slug"
@@ -24,9 +36,9 @@ export function ServicesPage() {
               <div className="font-display font-bold text-lg group-hover:text-brand-red transition">
                 {s.name}
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">{s.blurb}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{s.blurb || s.short_description}</p>
               <div className="mt-4 flex flex-wrap gap-1.5">
-                {s.subs.slice(0, 4).map((sub) => (
+                {(s.subs ?? []).slice(0, 4).map((sub) => (
                   <span
                     key={sub}
                     className="text-[11px] font-medium bg-brand-light px-2 py-0.5 rounded-full"
@@ -34,9 +46,9 @@ export function ServicesPage() {
                     {sub}
                   </span>
                 ))}
-                {s.subs.length > 4 && (
+                {(s.subs ?? []).length > 4 && (
                   <span className="text-[11px] font-medium text-brand-red">
-                    +{s.subs.length - 4}
+                    +{(s.subs ?? []).length - 4}
                   </span>
                 )}
               </div>

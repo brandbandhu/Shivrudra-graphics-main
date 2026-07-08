@@ -35,6 +35,8 @@ import {
   Wheat,
 } from "lucide-react";
 import { INDUSTRIES } from "@/data/site";
+import { useEffect, useState } from "react";
+import { fetchPublicIndustries } from "@/lib/public-content";
 import agricultureIcon from "@/assets/icons/Agriculture.png";
 import educationIcon from "@/assets/icons/Education.png";
 import wholesaleTradeIcon from "@/assets/icons/Wholesale Trade (1).png";
@@ -99,6 +101,16 @@ const INDUSTRY_ICONS = [
 ];
 
 export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
+  const [industries, setIndustries] = useState<string[]>(INDUSTRIES);
+
+  useEffect(() => {
+    fetchPublicIndustries()
+      .then((items) => {
+        if (items.length) setIndustries(items.map((item) => item.name));
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div
       className={
@@ -107,7 +119,7 @@ export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
           : "mx-auto grid max-w-[1280px] grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-6"
       }
     >
-      {INDUSTRIES.map((industry, index) => {
+      {industries.map((industry, index) => {
         const Icon = INDUSTRY_ICONS[index] ?? BriefcaseBusiness;
         const customIcon =
           industry === "Agriculture"

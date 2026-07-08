@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Maximize2, X } from "lucide-react";
 import { GALLERY_CATEGORIES } from "@/data/site";
+import { assetUrl } from "@/lib/api";
+import { fetchPublicGallery } from "@/lib/public-content";
 
 type GalleryItem = { cat: string; title: string; img: string };
 
@@ -78,15 +80,31 @@ export function ProductGallerySection({
 }) {
   const [active, setActive] = useState("All");
   const [selected, setSelected] = useState<GalleryItem | null>(null);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(PRODUCT_GALLERY_ITEMS);
+
+  useEffect(() => {
+    fetchPublicGallery()
+      .then((items) => {
+        if (!items.length) return;
+        setGalleryItems(
+          items.map((item) => ({
+            cat: item.category || item.cat || "Printing",
+            title: item.title,
+            img: item.image_url || item.img || "",
+          })),
+        );
+      })
+      .catch(() => {});
+  }, []);
 
   const filtered = useMemo(() => {
     const items =
       showFilters && active !== "All"
-        ? PRODUCT_GALLERY_ITEMS.filter((item) => item.cat === active)
-        : PRODUCT_GALLERY_ITEMS;
+        ? galleryItems.filter((item) => item.cat === active)
+        : galleryItems;
 
     return typeof limit === "number" ? items.slice(0, limit) : items;
-  }, [active, limit, showFilters]);
+  }, [active, galleryItems, limit, showFilters]);
 
   return (
     <section className={`bg-white ${compactTop ? "pb-16 pt-8" : "py-16"}`}>
@@ -127,7 +145,7 @@ export function ProductGallerySection({
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-brand-light">
                 <img
-                  src={item.img}
+                  src={assetUrl(item.img)}
                   alt={item.title}
                   loading="lazy"
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
@@ -172,7 +190,7 @@ export function ProductGallerySection({
             </button>
             <div className="grid min-h-0 flex-1 place-items-center bg-neutral-100 p-4 sm:p-6">
               <img
-                src={selected.img}
+                src={assetUrl(selected.img)}
                 alt={selected.title}
                 className="mx-auto max-h-[70vh] max-w-full rounded-lg object-contain"
               />

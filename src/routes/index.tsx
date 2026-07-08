@@ -8,15 +8,7 @@ import {
   CheckCircle2,
   Printer,
   Factory,
-  Building2,
-  Lightbulb,
   Signpost,
-  Package,
-  Gift,
-  Car,
-  ShieldAlert,
-  Monitor,
-  Layers,
   Star,
   Search,
   FileText,
@@ -25,33 +17,22 @@ import {
   MessageCircle,
 } from "lucide-react";
 import {
-  CATEGORIES,
   PROCESS_STEPS,
   WHY_CHOOSE,
   TIMELINE,
   CONTACT,
   SITE_TAGLINE,
 } from "@/data/site";
+import { useEffect, useState } from "react";
 import { Link } from "@/components/AppLink";
 import { IndustriesGrid } from "@/components/IndustriesGrid";
 import { ProductGallerySection } from "@/components/ProductGallerySection";
 import heroMotionVideo from "@/assets/moving LEDdot pattern.mp4";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-
-const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  Printer,
-  Factory,
-  Building2,
-  Lightbulb,
-  Signpost,
-  Package,
-  Gift,
-  Car,
-  ShieldAlert,
-  Monitor,
-  Layers,
-  Sparkles,
-};
+import {
+  fetchPublicTestimonials,
+  type PublicTestimonial,
+} from "@/lib/public-content";
 
 const TESTIMONIALS = [
   {
@@ -98,6 +79,16 @@ const PROCESS_STRIP_POINTS = [
 ];
 
 export function HomePage() {
+  const [testimonials, setTestimonials] = useState<PublicTestimonial[]>(TESTIMONIALS);
+
+  useEffect(() => {
+    fetchPublicTestimonials()
+      .then((items) => {
+        if (items.length) setTestimonials(items);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div>
       {/* HERO */}
@@ -165,43 +156,6 @@ export function HomePage() {
                 ))}
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CATEGORIES */}
-      <section className="py-20">
-        <div className="container-page">
-          <SectionHeader
-            eyebrow="Browse Categories"
-            title="What we craft"
-            desc="Explore our complete range of printing, signage and branding categories."
-          />
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {CATEGORIES.map((c, i) => {
-              const Icon = CATEGORY_ICONS[c.icon] ?? Sparkles;
-              return (
-                <Link
-                  key={c.slug}
-                  to="/categories"
-                  className="group relative overflow-hidden rounded-2xl border border-border bg-white p-6 hover:border-brand-red hover:-translate-y-1 transition shadow-soft"
-                  style={{ animationDelay: `${i * 50}ms` }}
-                >
-                  <div className="absolute inset-0 gradient-brand opacity-0 group-hover:opacity-100 transition" />
-                  <div className="relative">
-                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-brand-light group-hover:bg-white/20 transition">
-                      <Icon className="h-6 w-6 text-brand-red group-hover:text-white transition" />
-                    </div>
-                    <div className="mt-4 font-display font-bold text-brand-dark group-hover:text-white transition">
-                      {c.name}
-                    </div>
-                    <div className="mt-1 text-xs text-muted-foreground group-hover:text-white/80 transition">
-                      Explore →
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
           </div>
         </div>
       </section>
@@ -486,23 +440,25 @@ export function HomePage() {
             desc="Feedback from businesses who trust us for printing, branding and signage."
           />
           <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {TESTIMONIALS.map((item) => (
+            {testimonials.map((item) => (
               <div
-                key={item.name}
+                key={item.id ?? item.name ?? item.client_name}
                 className="rounded-2xl border border-border bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-brand-red"
               >
                 <div className="flex gap-1 text-brand-yellow">
-                  {[...Array(5)].map((_, index) => (
+                  {[...Array(item.rating || 5)].map((_, index) => (
                     <Star key={index} className="h-4 w-4 fill-current" />
                   ))}
                 </div>
                 <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                  "{item.text}"
+                  "{item.text || item.message}"
                 </p>
                 <div className="mt-6 border-t border-border pt-4">
-                  <div className="font-display font-bold text-brand-dark">{item.name}</div>
+                  <div className="font-display font-bold text-brand-dark">
+                    {item.name || item.client_name}
+                  </div>
                   <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-brand-red">
-                    {item.role}
+                    {item.role || item.client_role || item.company}
                   </div>
                 </div>
               </div>

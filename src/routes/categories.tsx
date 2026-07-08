@@ -16,6 +16,13 @@ import {
   Layers,
 } from "lucide-react";
 import { Link } from "@/components/AppLink";
+import { useEffect, useState } from "react";
+import {
+  fetchPublicCategories,
+  fetchPublicServices,
+  type PublicCategory,
+  type PublicService,
+} from "@/lib/public-content";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Printer,
@@ -53,6 +60,22 @@ const CATEGORY_SERVICE_SLUGS: Record<string, string[]> = {
 };
 
 export function CategoriesPage() {
+  const [categories, setCategories] = useState<PublicCategory[]>(CATEGORIES);
+  const [services, setServices] = useState<PublicService[]>(SERVICES);
+
+  useEffect(() => {
+    fetchPublicCategories()
+      .then((items) => {
+        if (items.length) setCategories(items);
+      })
+      .catch(() => {});
+    fetchPublicServices()
+      .then((items) => {
+        if (items.length) setServices(items);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div>
       <PageHero
@@ -62,11 +85,11 @@ export function CategoriesPage() {
       />
       <section className="py-16 container-page">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CATEGORIES.map((c) => {
-            const Icon = ICONS[c.icon] ?? Sparkles;
+          {categories.map((c) => {
+            const Icon = ICONS[c.icon || ""] ?? Sparkles;
             const related = (CATEGORY_SERVICE_SLUGS[c.slug] ?? [])
-              .map((slug) => SERVICES.find((service) => service.slug === slug))
-              .filter((service): service is (typeof SERVICES)[number] => Boolean(service));
+              .map((slug) => services.find((service) => service.slug === slug))
+              .filter((service): service is PublicService => Boolean(service));
 
             return (
               <div

@@ -6,8 +6,8 @@ import { Header } from "@/components/Header";
 import { Link } from "@/components/AppLink";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { SITE_TAGLINE } from "@/data/site";
+import { AdminPage } from "@/routes/admin";
 import { AboutPage } from "@/routes/about";
-import { CategoriesPage } from "@/routes/categories";
 import { ClientsPage } from "@/routes/clients";
 import { ContactPage } from "@/routes/contact";
 import { GalleryPage } from "@/routes/gallery";
@@ -22,7 +22,6 @@ const STATIC_TITLES: Record<string, string> = {
   "/": "Shivrudra Graphics Pvt Ltd - Printing, Branding & LED Signage in Pune",
   "/about": "About Us - Shivrudra Graphics Pvt Ltd",
   "/services": "Our Services - Shivrudra Graphics Pvt Ltd",
-  "/categories": "Categories - Shivrudra Graphics Pvt Ltd",
   "/industries": "Industries We Serve - Shivrudra Graphics",
   "/gallery": "Gallery - Shivrudra Graphics",
   "/clients": "Our Clients - Shivrudra Graphics",
@@ -54,6 +53,8 @@ function setMeta(nameOrProperty: "name" | "property", key: string, content: stri
 
 function usePageMeta(pathname: string) {
   useEffect(() => {
+    if (pathname.startsWith("/admin")) return;
+
     const title = STATIC_TITLES[pathname] ?? "Shivrudra Graphics Pvt Ltd";
     const description =
       pathname === "/" ? `ISO 9001:2015 Certified. ${SITE_TAGLINE} in Pune.` : SITE_TAGLINE;
@@ -91,7 +92,6 @@ function CurrentPage({ pathname }: { pathname: string }) {
   if (pathname === "/") return <HomePage />;
   if (pathname === "/about") return <AboutPage />;
   if (pathname === "/services") return <ServicesPage />;
-  if (pathname === "/categories") return <CategoriesPage />;
   if (pathname === "/industries") return <IndustriesPage />;
   if (pathname === "/gallery") return <GalleryPage />;
   if (pathname === "/clients") return <ClientsPage />;
@@ -107,6 +107,15 @@ function CurrentPage({ pathname }: { pathname: string }) {
 export function App() {
   const pathname = usePathname();
   usePageMeta(pathname);
+
+  const navigate = (path: string) => {
+    window.history.pushState({}, "", path);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
+
+  if (pathname.startsWith("/admin")) {
+    return <AdminPage pathname={pathname} navigate={navigate} />;
+  }
 
   return (
     <>

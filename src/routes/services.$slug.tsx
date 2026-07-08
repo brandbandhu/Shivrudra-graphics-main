@@ -4,6 +4,8 @@ import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
 import { toProductSlug } from "@/lib/products";
 import { Link } from "@/components/AppLink";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import { useEffect, useState } from "react";
+import { fetchPublicServices, type PublicService } from "@/lib/public-content";
 
 export function ServiceNotFound() {
   return (
@@ -17,16 +19,26 @@ export function ServiceNotFound() {
 }
 
 export function ServiceDetail({ slug }: { slug: string }) {
-  const svc = SERVICES.find((s) => s.slug === slug);
+  const [services, setServices] = useState<PublicService[]>(SERVICES);
+
+  useEffect(() => {
+    fetchPublicServices()
+      .then((items) => {
+        if (items.length) setServices(items);
+      })
+      .catch(() => {});
+  }, []);
+
+  const svc = services.find((s) => s.slug === slug);
   if (!svc) return <ServiceNotFound />;
 
-  const others = SERVICES.filter((s) => s.slug !== svc.slug).slice(0, 6);
+  const others = services.filter((s) => s.slug !== svc.slug).slice(0, 6);
 
   return (
     <div>
       <PageHero
         title={svc.name}
-        subtitle={svc.blurb}
+        subtitle={svc.blurb || svc.short_description || ""}
         breadcrumb={[{ label: "Services", to: "/services" }, { label: svc.name }]}
       />
 
@@ -40,7 +52,7 @@ export function ServiceDetail({ slug }: { slug: string }) {
             with premium materials and delivered on time.
           </p>
           <div className="mt-8 grid sm:grid-cols-2 gap-3">
-            {svc.subs.map((sub: string) => {
+            {(svc.subs ?? []).map((sub: string) => {
               const content = (
                 <>
                   <CheckCircle2 className="h-5 w-5 text-brand-red mt-0.5 shrink-0" />
@@ -61,7 +73,10 @@ export function ServiceDetail({ slug }: { slug: string }) {
                 <Link
                   key={sub}
                   to="/products/$productSlug"
-                  params={{ productSlug: toProductSlug(sub) }}
+                  params={{
+                    productSlug:
+                      svc.products?.find((product) => product.name === sub)?.slug ?? toProductSlug(sub),
+                  }}
                   className="flex items-start gap-3 p-4 rounded-xl bg-white border border-border hover:border-brand-red transition"
                 >
                   {content}
