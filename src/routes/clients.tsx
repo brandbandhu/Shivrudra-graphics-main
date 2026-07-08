@@ -36,6 +36,7 @@ import shomeshwarBhelLogo from "@/assets/client logos/shomeshwar bhel.png";
 import gurudattaWadapavLogo from "@/assets/client logos/gurudatta wadapav.png";
 import serumLogo from "@/assets/client logos/serum logo.png";
 import fitnessLogo from "@/assets/client logos/fitness.png";
+import inigmaAirLogo from "@/assets/client logos/inigmaair.png";
 import { useEffect, useState } from "react";
 import { fetchPublicClients, type PublicClient } from "@/lib/public-content";
 
@@ -187,6 +188,10 @@ const STATIC_CLIENTS = [
   {
     name: "Axiss Health Club",
     logo: fitnessLogo,
+  },
+  {
+    name: "Inigma Air",
+    logo: inigmaAirLogo,
   },
 ];
 
