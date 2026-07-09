@@ -468,9 +468,9 @@ export function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20">
+      <section className="py-6 sm:py-8">
         <div className="container-page">
-          <div className="relative overflow-hidden rounded-3xl gradient-brand text-white p-10 md:p-16 text-center shadow-brand">
+          <div className="relative overflow-hidden rounded-3xl gradient-brand text-white p-8 md:p-12 text-center shadow-brand">
             <div
               className="absolute top-0 left-0 h-full w-full opacity-10"
               style={{

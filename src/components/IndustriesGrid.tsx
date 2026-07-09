@@ -4,8 +4,8 @@ import automotiveImage from "@/assets/industries we serve/Automotive.png";
 import bakeryImage from "@/assets/industries we serve/Bakery.png";
 import bankImage from "@/assets/industries we serve/Bank.png";
 import constructionImage from "@/assets/industries we serve/Construction.png";
-import cosmeticsImage from "@/assets/industries we serve/Cosmetics.png";
-import decoratorImage from "@/assets/industries we serve/Decorator.png";
+import cosmeticsImage from "@/assets/industries we serve/Cosmetics (1).png";
+import decoratorImage from "@/assets/industries we serve/Decorator (1).png";
 import educationImage from "@/assets/industries we serve/Education.png";
 import engineeringImage from "@/assets/industries we serve/Engineering.png";
 import eventImage from "@/assets/industries we serve/Event.png";
@@ -30,7 +30,7 @@ import wholesaleTradeImage from "@/assets/industries we serve/Wholesale Trade.pn
 
 const INDUSTRY_ITEMS = [
   { name: "Advertising & Media", image: advertisingMediaImage },
-  { name: "Agriculture", image: agricultureImage },
+  { name: "Agriculture", image: agricultureImage, className: "h-16 w-16 sm:h-20 sm:w-20 xl:h-24 xl:w-24" },
   { name: "Automotive", image: automotiveImage },
   { name: "Bakery", image: bakeryImage },
   { name: "Bank", image: bankImage },
@@ -74,8 +74,8 @@ export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
           <div
             className={
               framed
-                ? "mx-auto grid h-[76px] w-[76px] place-items-center rounded-full border-2 border-[#d8d8d8] bg-white transition group-hover:border-brand-red"
-                : "mx-auto grid h-28 w-28 place-items-center rounded-full border-[3px] border-[#d9d9d9] bg-white transition group-hover:border-brand-red sm:h-32 sm:w-32 xl:h-36 xl:w-36"
+                ? "relative mx-auto grid h-[76px] w-[76px] place-items-center overflow-hidden rounded-full bg-white transition after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:border-2 after:border-[#d8d8d8] after:transition after:content-[''] group-hover:after:border-brand-red"
+                : "relative mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-full bg-white transition after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:border-[3px] after:border-[#d9d9d9] after:transition after:content-[''] group-hover:after:border-brand-red sm:h-28 sm:w-28 xl:h-32 xl:w-32"
             }
           >
             <img
@@ -83,8 +83,8 @@ export function IndustriesGrid({ framed = false }: { framed?: boolean }) {
               alt=""
               className={
                 framed
-                  ? "h-12 w-12 object-contain"
-                  : "h-16 w-16 object-contain sm:h-20 sm:w-20 xl:h-24 xl:w-24"
+                  ? "h-12 w-12 object-contain mix-blend-multiply"
+                  : `${industry.className ?? "h-14 w-14 sm:h-16 sm:w-16 xl:h-20 xl:w-20"} object-contain mix-blend-multiply`
               }
             />
           </div>
