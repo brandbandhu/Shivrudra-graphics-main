@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import {
   PROCESS_STEPS,
+  SERVICES,
   WHY_CHOOSE,
   TIMELINE,
   CONTACT,
@@ -30,7 +31,9 @@ import { ProductGallerySection } from "@/components/ProductGallerySection";
 import heroMotionVideo from "@/assets/moving LEDdot pattern.mp4";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import {
+  fetchPublicServices,
   fetchPublicTestimonials,
+  type PublicService,
   type PublicTestimonial,
 } from "@/lib/public-content";
 
@@ -79,9 +82,16 @@ const PROCESS_STRIP_POINTS = [
 ];
 
 export function HomePage() {
+  const [services, setServices] = useState<PublicService[]>(SERVICES);
   const [testimonials, setTestimonials] = useState<PublicTestimonial[]>(TESTIMONIALS);
 
   useEffect(() => {
+    fetchPublicServices()
+      .then((items) => {
+        if (items.length) setServices(items);
+      })
+      .catch(() => {});
+
     fetchPublicTestimonials()
       .then((items) => {
         if (items.length) setTestimonials(items);
@@ -156,6 +166,66 @@ export function HomePage() {
                 ))}
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section className="relative overflow-hidden bg-white py-14 md:py-16">
+        <div className="absolute inset-x-0 top-0 h-1.5 gradient-brand" />
+        <div className="container-page relative">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <div className="text-xs font-bold uppercase tracking-widest text-brand-red">
+                All Services
+              </div>
+              <h2 className="mt-2 font-display text-3xl font-black text-brand-dark md:text-4xl">
+                Our Complete Service Range
+              </h2>
+              <p className="mt-3 leading-relaxed text-muted-foreground">
+                Professional printing, signage, branding and industrial solutions for every
+                business need.
+              </p>
+            </div>
+            <Link
+              to="/services"
+              className="inline-flex w-fit items-center gap-2 rounded-full gradient-brand px-5 py-3 text-sm font-bold text-white shadow-brand transition hover:scale-105"
+            >
+              View service page <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="mt-9 overflow-hidden rounded-2xl border border-border bg-brand-light/70">
+            <div className="grid divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
+              {[
+                services.filter((_, index) => index % 3 === 0),
+                services.filter((_, index) => index % 3 === 1),
+                services.filter((_, index) => index % 3 === 2),
+              ].map((column, columnIndex) => (
+                <div key={columnIndex} className="divide-y divide-border">
+                  {column.map((service) => {
+                    const index = services.findIndex((item) => item.slug === service.slug);
+
+                    return (
+                      <Link
+                        key={service.slug}
+                        to="/services/$slug"
+                        params={{ slug: service.slug }}
+                        className="group flex min-h-16 items-center gap-3 bg-white/70 px-4 py-3.5 transition hover:bg-white"
+                      >
+                        <span className="text-xs font-black text-brand-red/70">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <h3 className="min-w-0 flex-1 font-display text-[15px] font-extrabold leading-snug text-brand-dark transition group-hover:text-brand-red">
+                          {service.name}
+                        </h3>
+                        <ArrowRight className="h-4 w-4 shrink-0 text-brand-red opacity-60 transition group-hover:translate-x-1 group-hover:opacity-100" />
+                      </Link>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
