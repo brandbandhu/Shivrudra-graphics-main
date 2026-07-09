@@ -97,17 +97,11 @@ export function Footer() {
               </a>
             </li>
           </ul>
-          <a
-            href={`https://wa.me/${CONTACT.whatsapp}`}
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-semibold"
-          >
-            <WhatsAppIcon className="h-4 w-4" /> Chat on WhatsApp
-          </a>
           <div className="mt-4 flex gap-3">
             <a
               href={`https://wa.me/${CONTACT.whatsapp}`}
               aria-label="WhatsApp"
-              className="grid h-9 w-9 place-items-center rounded-full bg-[#25D366] text-white transition hover:bg-[#1ebe5d]"
+              className="grid h-9 w-9 place-items-center rounded-full bg-white/10 transition hover:bg-[#25D366]"
             >
               <WhatsAppIcon className="h-4 w-4" />
             </a>
